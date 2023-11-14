@@ -1,3 +1,4 @@
+import NavBar from '@/components/NavBar'
 import React, { ReactNode } from 'react'
 
 interface layoutProps {
@@ -7,6 +8,7 @@ interface layoutProps {
 const layout = ({ children }: layoutProps) => {
   return (
     <div className='h-screen bg-slate-100'>
+      <NavBar />
       <main className='pt-40 pb-20 bg-slate-100'>{children}</main>
     </div>
   )

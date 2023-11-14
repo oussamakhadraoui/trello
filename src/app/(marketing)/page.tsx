@@ -5,6 +5,7 @@ import React from 'react'
 import localFont from 'next/font/local'
 import { cn } from '@/lib/utils'
 import { Poppins } from 'next/font/google'
+import Logo from '@/components/logo'
 const font = localFont({ src: '../../../public/fonts/font.woff2' })
 const Poppin = Poppins({
   subsets: ['latin'],
@@ -14,6 +15,7 @@ const Poppin = Poppins({
 const page = () => {
   return (
     <div className='flex items-center justify-center flex-col'>
+
       <div
         className={cn(
           'flex items-center justify-center flex-col',
