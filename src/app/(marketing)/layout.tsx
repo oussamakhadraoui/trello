@@ -1,3 +1,4 @@
+import { Footer } from '@/components/Footer'
 import NavBar from '@/components/NavBar'
 import React, { ReactNode } from 'react'
 
@@ -9,7 +10,9 @@ const layout = ({ children }: layoutProps) => {
   return (
     <div className='h-screen bg-slate-100'>
       <NavBar />
-      <main className='pt-40 pb-20 bg-slate-100'>{children}</main>
+      <main className='pt-40 pb-20 bg-slate-100'>{children}
+      </main>
+      <Footer/>
     </div>
   )
 }
