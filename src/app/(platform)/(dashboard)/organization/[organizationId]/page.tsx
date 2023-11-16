@@ -1,13 +1,15 @@
+import { OrganizationSwitcher, auth } from '@clerk/nextjs'
 import React from 'react'
 
 interface pageProps {
-  params:{
-   oraganizationId:string
+  params: {
+    organizationId: string
   }
 }
 
-const page = ({params:{oraganizationId}}: pageProps) => {
-  return <div>page</div>
+const page = ({params:{organizationId}}: pageProps) => {
+
+  return <div ><OrganizationSwitcher /></div>
 }
 
 export default page
