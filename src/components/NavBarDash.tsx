@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button'
 
 
 import Logo from './logo'
+import MobileSidebar from './MobileSidebar'
 
 export const NavBarDash = () => {
   return (
     <nav className='fixed z-50 top-0 px-4 w-full h-14 border-b shadow-sm bg-white flex items-center'>
-      {/* <MobileSidebar /> */}
+      <MobileSidebar />
       <div className='flex items-center gap-x-4'>
         <div className='hidden md:flex'>
           <Logo />
