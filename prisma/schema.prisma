@@ -103,5 +103,5 @@ model OrgSubscription {
 
 model oussama{
     id                String @id @default(uuid())
-    titile             String 
+    title             String 
 }
