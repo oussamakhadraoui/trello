@@ -1,6 +1,8 @@
 'use client'
 import { unsplash } from '@/lib/unSplash'
+import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -43,7 +45,33 @@ const FormPicker = ({ errors, id }: FormPickerProps) => {
       </div>
     )
   }
-  return <div>FormPicker</div>
+  return (
+    <div className='relative '>
+      <div className='grid grid-cols-3 gap-2 mb-2'>
+        {images.map((image) => (
+          <div
+            key={image.id}
+            className={cn(
+              'cursor-pointer relative aspect-video group hover:opacity-75 bg-muted transition',
+              pending && 'opacity-50 hover:opacity-50 cursor-auto'
+            )}
+            onClick={() => {
+              if (pending) return
+
+              setSelectedImageId(image.id)
+            }}
+          >
+            <Image
+              fill
+              src={image.urls.thumb}
+              alt={"unsplash image"}
+              className='object-cover rounded-sm'
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export default FormPicker
