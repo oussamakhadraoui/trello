@@ -1,8 +1,12 @@
-"use client"
-import {  create } from '@/actions/Create'
+'use client'
+
+import { createBoard } from '@/actions/create-board'
+import Test from '@/components/Test'
+import FormInput from '@/components/form/FormInput'
+import FormSubmit from '@/components/form/FormSubmit'
+import { useAction } from '@/hooks/useAction'
 import React from 'react'
 import { useFormState } from 'react-dom'
-
 
 interface pageProps {
   params: {
@@ -11,21 +15,26 @@ interface pageProps {
 }
 
 const Page = ({ params: { organizationId } }: pageProps) => {
-  const initial = {message:null,errors:{}}
-  const [state, dispatch] = useFormState(create,initial)
-  
+  const { execute, fieldErrors } = useAction(createBoard, {
+    onError(error) {
+      console.log(error)
+    },
+    onSuccess(data) {
+      console.log(data)
+    },
+  })
+  const OnSubmit = (FormData: FormData) => {
+    const title = FormData.get('title') as string
+    execute({ title })
+  }
 
   return (
-    <div>
-      {/* <OrganizationSwitcher /> */}
-
-      <form action={dispatch}>
-        <input name='titile' id='titile' type='text' placeholder='search' />
-        {state?.errors?.titile && <div>{state.errors?.titile}</div>}
-        <button type='submit'>Search</button>
-      </form>
-
-    </div>
+    <form action={OnSubmit}>
+      <div className='flex flex-1 space-y-2'>
+        <FormInput label='Board Title' errors={fieldErrors} id='title' />
+      </div>
+      <FormSubmit>Submit</FormSubmit>
+    </form>
   )
 }
 
