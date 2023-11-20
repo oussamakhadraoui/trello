@@ -50,31 +50,38 @@ const FormPicker = ({ errors, id }: FormPickerProps) => {
     )
   }
   return (
-    <div className='relative '>
+    <div className='relative'>
       <div className='grid grid-cols-3 gap-2 mb-2'>
         {images.map((image) => (
           <div
             key={image.id}
             className={cn(
-              'cursor-pointer relative aspect-video group hover:opacity-75 bg-muted transition',
+              'cursor-pointer relative aspect-video group hover:opacity-75 transition bg-muted',
               pending && 'opacity-50 hover:opacity-50 cursor-auto'
             )}
             onClick={() => {
               if (pending) return
-
               setSelectedImageId(image.id)
             }}
           >
-            <input type='radio' id={id} name={id} value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`} className='hidden' checked={selectedImageId === image.id}
-            disabled={pending}/>
+            <input
+              type='radio'
+              id={id}
+              name={id}
+              className='hidden'
+              checked={selectedImageId === image.id}
+              disabled={pending}
+              value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
+              onChange={() => setSelectedImageId(image.id)}
+            />
             <Image
-              fill
               src={image.urls.thumb}
-              alt={'unsplash image'}
+              alt='Unsplash image'
               className='object-cover rounded-sm'
+              fill
             />
             {selectedImageId === image.id && (
-              <div className='absolute inset-y-0 w-full h-full bg-black flex items-center justify-center'>
+              <div className='absolute inset-y-0 h-full w-full bg-black/30 flex items-center justify-center'>
                 <Check className='h-4 w-4 text-white' />
               </div>
             )}
@@ -88,7 +95,7 @@ const FormPicker = ({ errors, id }: FormPickerProps) => {
           </div>
         ))}
       </div>
-      <FormError id='image' errors={errors}/>
+      <FormError id='image' errors={errors} />
     </div>
   )
 }

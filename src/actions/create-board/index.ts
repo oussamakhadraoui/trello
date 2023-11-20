@@ -1,6 +1,5 @@
 'use server'
 
-
 import { auth } from '@clerk/nextjs'
 import { InputType, ReturnType } from './type'
 import { db } from '@/lib/db'
@@ -9,24 +8,46 @@ import { createSafeAction } from '@/lib/createSafeActions'
 import { CreateBoardSchema } from './schema'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth()
-  if (!userId) {
+  const { userId, orgId } = auth()
+
+  if (!userId || !orgId) {
     return {
-      error: 'unauthorized',
+      error: 'Unauthorized',
     }
   }
 
-  const { title } = data
-  if (!title) {
+  const { title, image } = data
+  if (!title || !image) {
     return {
       error: 'title is required',
     }
   }
-  let Board
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
+    image.split('|')
+
+  if (
+    !imageId ||
+    !imageThumbUrl ||
+    !imageFullUrl ||
+    !imageUserName ||
+    !imageLinkHTML
+  ) {
+    return {
+      error: 'Missing fields. Failed to create board.',
+    }
+  }
+
+  let board
   try {
-    Board = await db.oussama.create({
+    board = await db.board.create({
       data: {
         title,
+        imageFullUrl,
+        imageLinkHTML,
+        imageUserName,
+        imageThumbUrl,
+        orgId,
+        imageId,
       },
     })
   } catch (error) {
@@ -34,9 +55,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: 'something went wrong',
     }
   }
-  revalidatePath(`/board/${Board.id}`)
-  return {
-    data: Board,
-  }
+  revalidatePath(`/board/${board.id}`)
+  return { data: board }
 }
+
 export const createBoard = createSafeAction(CreateBoardSchema, handler)

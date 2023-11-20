@@ -7,4 +7,8 @@ export const CreateBoardSchema = zod.object({
       invalid_type_error: 'title must be a string',
     })
     .min(3, { message: 'title must be at least 3 characters' }),
+  image: zod.string({
+    required_error: 'Image is required',
+    invalid_type_error: 'Image is required',
+  }),
 })
