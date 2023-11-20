@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 
 import Logo from './logo'
 import MobileSidebar from './MobileSidebar'
+import FormPopover from './form/FormPopover'
 
 export const NavBarDash = () => {
   return (
@@ -16,7 +17,7 @@ export const NavBarDash = () => {
         <div className='hidden md:flex'>
           <Logo />
         </div>
-        {/* <FormPopover align='start' side='bottom' sideOffset={18}>
+        <FormPopover align='start' side='bottom' sideOffset={18}>
           <Button
             variant='primary'
             size='sm'
@@ -33,7 +34,7 @@ export const NavBarDash = () => {
           >
             <Plus className='h-4 w-4' />
           </Button>
-        </FormPopover> */}
+        </FormPopover>
       </div>
       <div className='ml-auto flex items-center gap-x-2'>
         <OrganizationSwitcher
