@@ -1,10 +1,13 @@
 'use client'
+import { defaultImage } from '@/constant/images'
 import { unsplash } from '@/lib/unSplash'
 import { cn } from '@/lib/utils'
-import { Loader2 } from 'lucide-react'
+import { Check, Loader2 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
+import FormError from './FormError'
 
 interface FormPickerProps {
   id: string
@@ -19,6 +22,7 @@ const FormPicker = ({ errors, id }: FormPickerProps) => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
+        throw Error('failed to get image from unsplash')
         const result = await unsplash.photos.getRandom({
           collectionIds: ['317099'],
           count: 9,
@@ -31,7 +35,7 @@ const FormPicker = ({ errors, id }: FormPickerProps) => {
         }
       } catch (error) {
         console.log(error)
-        setImages([])
+        setImages(defaultImage)
       } finally {
         setIsLoading(false)
       }
@@ -61,15 +65,30 @@ const FormPicker = ({ errors, id }: FormPickerProps) => {
               setSelectedImageId(image.id)
             }}
           >
+            <input type='radio' id={id} name={id} value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`} className='hidden' checked={selectedImageId === image.id}
+            disabled={pending}/>
             <Image
               fill
               src={image.urls.thumb}
-              alt={"unsplash image"}
+              alt={'unsplash image'}
               className='object-cover rounded-sm'
             />
+            {selectedImageId === image.id && (
+              <div className='absolute inset-y-0 w-full h-full bg-black flex items-center justify-center'>
+                <Check className='h-4 w-4 text-white' />
+              </div>
+            )}
+            <Link
+              href={image.links.html}
+              target='_blank'
+              className='opacity-0 group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50'
+            >
+              {image.user.name}
+            </Link>
           </div>
         ))}
       </div>
+      <FormError id='image' errors={errors}/>
     </div>
   )
 }
