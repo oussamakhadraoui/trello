@@ -1,13 +1,15 @@
 import React from 'react'
 
 interface pageProps {
-  params:{
-    boardId: string
-  }
+
 }
 
 const page = ({}: pageProps) => {
-  return <div>page</div>
+  return (
+    <div className='p-4 h-full overflow-x-auto'>
+      {/* <ListContainer boardId={params.boardId} data={lists} /> */}
+    </div>
+  )
 }
 
 export default page
