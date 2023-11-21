@@ -23,6 +23,9 @@ const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
       setTITLE(data.title)
       disableEditing()
     },
+    onError(error) {
+      toast.error(error)
+    },
   })
 
   const disableEditing = () => {
