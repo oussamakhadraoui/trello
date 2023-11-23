@@ -5,6 +5,10 @@ import React, { useEffect, useState } from 'react'
 import ListForm from './ListForm'
 import ListItem from './ListItem'
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
+import { useAction } from '@/hooks/useAction'
+import { updateListOrder } from '@/actions/update-list-order'
+import { toast } from 'sonner'
+import { updateCardOrder } from '@/actions/update-card-order'
 interface ListContainerProps {
   data: ListWithCards[]
   boardId: string
@@ -17,6 +21,22 @@ function reorder<T>(List: T[], startIndex: number, endIndex: number) {
 }
 const ListContainer = ({ boardId, data }: ListContainerProps) => {
   const [order, setOrder] = useState(data)
+  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: (data) => {
+      toast.success('list reordered successfully')
+    },
+    onError: (error) => {
+      toast.error(error)
+    },
+  })
+  const{execute:executeUpdateCardOrder}=useAction(updateCardOrder,{
+    onSuccess: (data) => {
+      toast.success('card reordered successfully')
+    },
+    onError: (error) => {
+      toast.error(error)
+    },
+  })
   useEffect(() => {
     setOrder(data)
   }, [data])
@@ -33,13 +53,17 @@ const ListContainer = ({ boardId, data }: ListContainerProps) => {
       return
     }
     if (type === 'list') {
-      const newOrder = reorder(order, source.index, destination.index).map(
+      const items = reorder(order, source.index, destination.index).map(
         (item, index) => ({
           ...item,
           order: index,
         })
       )
-      setOrder(newOrder)
+      setOrder(items)
+      executeUpdateListOrder({
+        items,
+        boardId,
+      })
     }
     //card
     if (type === 'card') {
@@ -71,6 +95,10 @@ const ListContainer = ({ boardId, data }: ListContainerProps) => {
         })
         sourceList.cards = reorderCards
         setOrder(newOrderData)
+        executeUpdateCardOrder({
+          boardId,
+          items: reorderCards,
+        })
       } else {
         const [movedCard] = sourceList.cards.splice(source.index, 1)
         movedCard.listId = destination.droppableId
@@ -83,6 +111,10 @@ const ListContainer = ({ boardId, data }: ListContainerProps) => {
         })
 
         setOrder(newOrderData)
+        executeUpdateCardOrder({
+          boardId,
+          items: destinationList.cards,
+        })
       }
     }
   }
