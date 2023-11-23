@@ -7,6 +7,7 @@ import { AuditLog } from '@prisma/client'
 import { useCardModal } from '@/hooks/useCardModal'
 import { CardWithList } from '@/lib/types'
 import { fetcher } from '@/lib/fetcher'
+import { Header } from './header'
 
 
 export const CardModal = () => {
