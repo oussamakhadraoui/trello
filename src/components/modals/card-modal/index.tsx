@@ -6,6 +6,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { AuditLog } from '@prisma/client'
 import { useCardModal } from '@/hooks/useCardModal'
 import { CardWithList } from '@/lib/types'
+import { fetcher } from '@/lib/fetcher'
 
 
 export const CardModal = () => {
@@ -15,12 +16,12 @@ export const CardModal = () => {
 
   const { data: cardData } = useQuery<CardWithList>({
     queryKey: ['card', id],
-    queryFn: () => fetcher(`/api/cards/${id}`),
+    queryFn: () => fetcher(`/api/card/${id}`),
   })
 
   const { data: auditLogsData } = useQuery<AuditLog[]>({
     queryKey: ['card-logs', id],
-    queryFn: () => fetcher(`/api/cards/${id}/logs`),
+    queryFn: () => fetcher(`/api/card/${id}/logs`),
   })
 
   return (
