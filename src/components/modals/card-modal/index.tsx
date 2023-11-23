@@ -30,7 +30,7 @@ export const CardModal = () => {
       <DialogContent>
         {!cardData ? <Header.Skeleton /> : <Header data={cardData} />}
         <div className='grid grid-cols-1 md:grid-cols-4 md:gap-4'>
-          <div className='col-span-3'>
+          {/* <div className='col-span-3'>
             <div className='w-full space-y-6'>
               {!cardData ? (
                 <Description.Skeleton />
@@ -43,8 +43,8 @@ export const CardModal = () => {
                 <Activity items={auditLogsData} />
               )}
             </div>
-          </div>
-          {!cardData ? <Actions.Skeleton /> : <Actions data={cardData} />}
+          </div> */}
+          {/* {!cardData ? <Actions.Skeleton /> : <Actions data={cardData} />} */}
         </div>
       </DialogContent>
     </Dialog>

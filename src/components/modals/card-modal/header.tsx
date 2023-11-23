@@ -9,6 +9,7 @@ import { useAction } from '@/hooks/useAction'
 import { CardWithList } from '@/lib/types'
 import FormInput from '@/components/form/FormInput'
 import { Skeleton } from '@/components/ui/skeleton'
+import { updateCard } from '@/actions/update-card'
 
 
 interface HeaderProps {
