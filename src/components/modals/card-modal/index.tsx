@@ -10,6 +10,7 @@ import { fetcher } from '@/lib/fetcher'
 import { Header } from './header'
 import { Description } from './description'
 import { Actions } from './action'
+import { Activity } from './Activity'
 
 
 export const CardModal = () => {
@@ -39,11 +40,11 @@ export const CardModal = () => {
               ) : (
                 <Description data={cardData} />
               )}
-              {/* {!auditLogsData ? (
+              {!auditLogsData ? (
                 <Activity.Skeleton />
               ) : (
                 <Activity items={auditLogsData} />
-              )} */}
+              )} 
             </div>
           </div>
           {!cardData ? <Actions.Skeleton /> : <Actions data={cardData} />}

@@ -6,6 +6,8 @@ import { revalidatePath } from 'next/cache'
 import { createSafeAction } from '@/lib/createSafeActions'
 import { titleSchema } from './schema'
 import { InputType, ReturnType } from './type'
+import { createAuditLog } from '@/lib/create-audit-log'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth()
 
@@ -31,6 +33,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         title,
       },
     })
+        await createAuditLog({
+          action: ACTION.UPDATE,
+          entityType: ENTITY_TYPE.BOARD,
+          entityId: updateBoard.id,
+          entityTitle: updateBoard.title,
+        })
   } catch (error) {
     return { error: 'something went wrong' }
   }

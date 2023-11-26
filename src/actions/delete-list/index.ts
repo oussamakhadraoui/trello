@@ -7,6 +7,8 @@ import { revalidatePath } from 'next/cache'
 import { createSafeAction } from '@/lib/createSafeActions'
 import { deleteSchema } from './schema'
 import { redirect } from 'next/navigation'
+import { createAuditLog } from '@/lib/create-audit-log'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
 
 export const handler = async (data: InputType): Promise<ReturnType> => {
   const { orgId, userId } = auth()
@@ -27,6 +29,12 @@ export const handler = async (data: InputType): Promise<ReturnType> => {
         },
       },
     })
+         await createAuditLog({
+           action: ACTION.DELETE,
+           entityType: ENTITY_TYPE.CARD,
+           entityId: deleteList.id,
+           entityTitle: deleteList.title,
+         })
   } catch (error) {
     return {
       error: 'something went wrong',

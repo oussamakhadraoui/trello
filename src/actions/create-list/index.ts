@@ -6,6 +6,8 @@ import { InputType, ReturnType } from './type'
 import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { createListSchema } from './schema'
+import { createAuditLog } from '@/lib/create-audit-log'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
 
 export const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth()
@@ -53,6 +55,12 @@ export const handler = async (data: InputType): Promise<ReturnType> => {
         boardId,
         order,
       },
+    })
+    await createAuditLog({
+      action: ACTION.CREATE,
+      entityType: ENTITY_TYPE.LIST,
+      entityId: newList.id,
+      entityTitle: newList.title,
     })
   } catch (error) {
     return {

@@ -6,6 +6,8 @@ import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { createSafeAction } from '@/lib/createSafeActions'
 import { deleteSchema } from './schema'
+import { createAuditLog } from '@/lib/create-audit-log'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
 
 
 export const handler = async (data: InputType): Promise<ReturnType> => {
@@ -16,19 +18,25 @@ export const handler = async (data: InputType): Promise<ReturnType> => {
     }
   }
   const { id, boardId } = data
-  let deleteList
+  let deleteCard
   try {
-    deleteList = await db.card.delete({
+    deleteCard = await db.card.delete({
       where: {
         id,
-        
+
         list: {
-          board:{
-            orgId
+          board: {
+            orgId,
           },
         },
       },
     })
+        await createAuditLog({
+          action: ACTION.DELETE,
+          entityType: ENTITY_TYPE.CARD,
+          entityId: deleteCard.id,
+          entityTitle: deleteCard.title,
+        })
   } catch (error) {
     return {
       error: 'something went wrong',
@@ -37,7 +45,7 @@ export const handler = async (data: InputType): Promise<ReturnType> => {
 
   revalidatePath(`/board/${boardId}`)
   return {
-    data: deleteList,
+    data: deleteCard,
   }
 }
 export const deleteCard = createSafeAction(deleteSchema, handler)
